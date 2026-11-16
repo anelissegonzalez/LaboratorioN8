@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz de JavaScript</title>
+
+    <style> 
+    /*ESTILOS GENERALES*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background-image: url("imagen/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+
+}
+
+/*CONTENEDOR PRINCIPAL*/
+
+.contenedor{
+
+    width:520px;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    box-shadow:0px 10px 25px rgba(0,0,0,0.25);
+
+}
+
+/*TITULO*/
+
+h1{
+
+    color:#d62839;
+
+    font-size:28px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+}
+
+/*ENCABEZADO*/
+
+.encabezado{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:15px;
+
+    font-size:18px;
+
+    color:#555;
+
+}
+
+/*BARRA DE PROGRESO*/
+
+.barra{
+
+    width:100%;
+
+    height:12px;
+
+    background:#ececec;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin-bottom:30px;
+
+}
+
+#progresoBarra{
+
+    width:20%;
+
+    height:100%;
+
+    background:linear-gradient(to right,#ff6b6b,#ff4d6d);
+
+    border-radius:20px;
+
+    transition:.5s;
+
+}
+
+/*TARJETA*/
+
+.tarjeta{
+
+    background:#fff7f7;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+/*TITULO DEL EJERCICIO*/
+
+#tituloEjercicio{
+
+    text-align:center;
+
+    color:#c1121f;
+
+    font-size:22px;
+
+    margin-bottom:10px;
+
+}
+
+#descripcion{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:25px;
+
+    font-size:17px;
+
+}
+
+/*INPUTS*/
+
+input{
+
+    width:100%;
+
+    padding:10px;
+
+    margin-bottom:10px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#eeeeee;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    background:#ffffff;
+
+    border:2px solid #ff4d6d;
+
+}
+
+/*BOTONES*/
+
+button{
+
+    width:100%;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#ff4d6d;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    margin-top:10px;
+
+}
+
+button:hover{
+
+    background:#d62839;
+
+    transform:scale(1.03);
+
+}
+
+/*RESULTADO*/
+
+#resultado{
+
+    margin-top:25px;
+
+    background:#e8fff2;
+
+    color:#1b7f45;
+
+    padding:18px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    display:none;
+
+}
+
+/*BOTON SIGUIENTE*/
+
+#btnSiguiente{
+
+    display:none;
+
+    margin-top:20px;
+
+    background:#ff7b54;
+
+}
+
+#btnSiguiente:hover{
+
+    background:#e85d04;
+
+}
+
+/*ANIMACIÓN*/
+
+.tarjeta{
+
+    animation:entrada .6s;
+
+}
+
+@keyframes entrada{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*RESPONSIVES*/
+
+@media(max-width:768px){
+
+    .contenedor{
+
+        width:100%;
+
+        padding:20px;
+
+    }
+
+    h1{
+
+        font-size:30px;
+
+    }
+
+    #tituloEjercicio{
+
+        font-size:24px;
+
+    }
+
+    /*ESCONDER EL BOTON DE REINICIO*/
+    #btnReiniciar{
+
+    display:none;
+
+    background:#2a9d8f;
+
+}
+
+
+#btnReiniciar:hover{
+
+    background:#21867a;
+
+}
+
+
+}
+    </style>
+
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>🧮 Calculadora </h1>
+
+        <div class="encabezado">
+
+            <span id="progresoTexto">Ejercicio 1 de 5</span>
+
+            <span id="contador">0/5</span>
+
+        </div>
+
+        <div class="barra">
+
+            <div id="progresoBarra"></div>
+
+        </div>
+
+        <div class="tarjeta">
+
+            <h2 id="tituloEjercicio">
+                Suma de tres valores
+            </h2>
+
+            <p id="descripcion">
+                Ingrese tres números y presione el botón para obtener la suma.
+            </p>
+
+            <div id="campos">
+
+                <!-- Los campos aparecerán aquí mediante JavaScript -->
+
+            </div>
+
+            <button id="btnCalcular" onclick="ejecutar()">
+            Calcular
+            </button>
+
+
+            <div id="resultado">
+
+            </div>
+
+            <button id="btnSiguiente" onclick="siguienteEjercicio()">
+
+                Siguiente →
+
+            </button>
+
+        </div>
+        <script>
+
+// =====================================
+// QUIZ DE EJERCICIOS JAVASCRIPT
+// =====================================
+
+
+// Variable que controla el ejercicio actual
+let ejercicioActual = 0;
+
+
+// Lista de ejercicios
+
+let ejercicios = [
+
+    {
+        titulo: "Suma de tres valores",
+
+        descripcion: "Ingrese tres números y obtenga la suma total.",
+
+        campos:[
+            "Primer número",
+            "Segundo número",
+            "Tercer número"
+        ]
+
+    },
+
+
+    {
+        titulo: "Cuadrado de un número",
+
+        descripcion:"Ingrese un número para calcular su valor elevado al cuadrado.",
+
+        campos:[
+            "Número"
+        ]
+
+    },
+
+
+    {
+        titulo:"Promedio de calificaciones",
+
+        descripcion:"Ingrese el nombre del estudiante y sus tres calificaciones.",
+
+        campos:[
+            "Nombre del estudiante",
+            "Primera calificación",
+            "Segunda calificación",
+            "Tercera calificación"
+        ]
+
+    },
+
+
+    {
+        titulo:"Conversión de unidades",
+
+        descripcion:"Ingrese metros para convertirlos a centímetros y kilómetros.",
+
+        campos:[
+            "Cantidad de metros"
+        ]
+
+    },
+
+
+    {
+        titulo:"Comparación de dos valores",
+
+        descripcion:"Ingrese dos números para conocer el mayor, menor y diferencia.",
+
+        campos:[
+            "Primer número",
+            "Segundo número"
+        ]
+
+    }
+
+];
+
+// FUNCIONALIDADES DEL ENTER
+document.addEventListener("keydown", function(event){
+    if(event.key === "Enter"){
+        let campos = document.querySelectorAll("#campos input");
+        let campoActual = document.activeElement;
+
+        // Verifica si el cursor está dentro de un input
+
+        if(campoActual.tagName === "INPUT"){
+
+            let ultimoCampo = campos[campos.length - 1];
+
+            // Solo calcula si está en el último campo
+
+            if(campoActual === ultimoCampo){
+                event.preventDefault();
+                ejecutar();
+            }
+        }
+    }
+});
+// CARGAR EJERCICIO
+function cargarEjercicio(){
+    let ejercicio = ejercicios[ejercicioActual];
+    document.getElementById("tituloEjercicio").innerHTML = ejercicio.titulo;
+    document.getElementById("descripcion").innerHTML = ejercicio.descripcion;
+    document.getElementById("progresoTexto").innerHTML = "Ejercicio " + (ejercicioActual + 1) + " de 5";
+    let porcentaje = ((ejercicioActual + 1) / 5) * 100;
+    document.getElementById("progresoBarra").style.width = porcentaje + "%";
+    let campos = document.getElementById("campos");
+    campos.innerHTML = "";
+    ejercicio.campos.forEach(function(nombre, indice){
+        campos.innerHTML +=
+
+        `
+        <input 
+        type="text"
+        id="campo${indice}"
+        placeholder="${nombre}">
+        `;
+
+
+    });
+
+    document.getElementById("resultado").style.display="none";
+    document.getElementById("resultado").innerHTML="";
+    document.getElementById("btnSiguiente").style.display="none";
+
+
+}
+
+
+// EJECUTAR CÁLCULO
+function ejecutar(){
+let resultado = "";
+// Ejercicio 1
+
+if(ejercicioActual == 0){
+    let num1 = Number(document.getElementById("campo0").value);
+    let num2 = Number(document.getElementById("campo1").value);
+    let num3 = Number(document.getElementById("campo2").value);
+    let suma = num1 + num2 + num3;
+
+    resultado =
+    "La suma de los valores ingresados es: " + suma;
+}
+
+// Ejercicio 2
+else if(ejercicioActual == 1){
+    let numero =
+    Number(document.getElementById("campo0").value);
+    let cuadrado = numero * numero;
+    resultado =
+    "El cuadrado de " + numero + " es: " + cuadrado;
+}
+
+
+
+// Ejercicio 3
+else if(ejercicioActual == 2){
+
+
+    let nombre = document.getElementById("campo0").value;
+    let nota1 = Number(document.getElementById("campo1").value);
+    let nota2 = Number(document.getElementById("campo2").value);
+    let nota3 = Number(document.getElementById("campo3").value);
+    let promedio = (nota1 + nota2 + nota3) / 3;
+
+    resultado = "El promedio de " + nombre + " es: " + promedio.toFixed(2) + " puntos";
+}
+
+
+
+// Ejercicio 4
+
+else if(ejercicioActual == 3){
+
+
+    let metros =
+    Number(document.getElementById("campo0").value);
+    let centimetros = metros * 100;
+    let kilometros = metros / 1000;
+
+    resultado =  metros + " metros equivalen a " + centimetros + " centímetros y " + kilometros + " kilómetros.";
+}
+
+
+
+// Ejercicio 5
+
+else if(ejercicioActual == 4){
+    let num1 =
+    Number(document.getElementById("campo0").value);
+    let num2 =
+    Number(document.getElementById("campo1").value);
+
+    let mayor;
+    let menor;
+    if(num1 > num2){
+
+        mayor = num1;
+
+        menor = num2;
+
+    }
+
+    else{
+
+        mayor = num2;
+
+        menor = num1;
+
+    }
+
+
+
+    let diferencia = mayor - menor;
+
+    resultado = "El número mayor es " + mayor + ", el menor es " + menor + " y su diferencia es " + diferencia + ".";
+}
+
+
+
+// Mostrar resultado
+
+let cajaResultado = 
+document.getElementById("resultado");
+cajaResultado.innerHTML = resultado;
+cajaResultado.style.display="block";
+document.getElementById("btnSiguiente").style.display="block";
+
+
+}
+
+// =====================================
+// SIGUIENTE EJERCICIO
+// =====================================
+
+function siguienteEjercicio(){
+
+
+    ejercicioActual++;
+    if(ejercicioActual < ejercicios.length){
+        cargarEjercicio();
+    }
+
+    else{
+
+
+        document.getElementById("tituloEjercicio").innerHTML =
+        "🎉 Quiz terminado";
+
+
+        document.getElementById("descripcion").innerHTML =
+        "Has completado todos los ejercicios.";
+
+
+        document.getElementById("campos").innerHTML="";
+
+
+        document.getElementById("resultado").style.display="block";
+
+
+        document.getElementById("resultado").innerHTML =
+        "Excelente trabajo ⭐";
+
+
+        document.getElementById("btnCalcular").style.display="none";
+
+
+        document.getElementById("btnSiguiente").style.display="block";
+
+
+        document.getElementById("btnSiguiente").innerHTML =
+        "🔄 Reiniciar quiz";
+
+
+        document.getElementById("progresoBarra").style.width="100%";
+
+
+        document.getElementById("progresoTexto").innerHTML =
+        "Completado 5 de 5";
+
+
+    }
+
+
+}
+
+// REINICIAR QUIZ
+
+document.getElementById("btnSiguiente").onclick = function(){
+
+
+    if(ejercicioActual >= ejercicios.length){
+
+
+        ejercicioActual = 0;
+
+
+        document.getElementById("btnCalcular").style.display="block";
+
+
+        document.getElementById("btnSiguiente").innerHTML =
+        "Siguiente →";
+
+
+        cargarEjercicio();
+
+
+    }
+
+    else{
+
+
+        siguienteEjercicio();
+
+    }
+
+
+};
+
+
+
+// Cargar primer ejercicio
+
+cargarEjercicio();
+
+
+</script>
+</html>
